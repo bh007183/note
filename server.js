@@ -41,3 +41,18 @@
 
 //read file modify file update file
 return response.sendStatus(404)
+
+
+
+
+// app.post("/api/notes", function(request, response){
+//      fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
+//       if(error){return response.sendStatus(404)} 
+//       let mainData = JSON.parse(data)
+//         mainData.push(request.body)
+//         fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
+//           if(err) throw err
+//           response.json(request.body)
+// })
+// })
+// })

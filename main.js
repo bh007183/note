@@ -37,51 +37,40 @@ app.get("/api/notes", function(request, response){
 
 
 app.post("/api/notes", function(request, response){
+    
      fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
       if(error){return response.sendStatus(404)} 
-//////////////////////////add id here////////////////////////
       let mainData = JSON.parse(data)
-        mainData.push(request.body)
+      mainData.push(request.body)
+      //////////////////////////added id here////////////////////////
+      for(let i = 0; i < mainData.length; i++){
+        mainData[i].id = i  
+      }
         fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
           if(err) throw err
           response.json(request.body)
+})
 })
 })
 
-})
-app.post("/api/notes", function(request, response){
-     fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
-      if(error){return response.sendStatus(404)} 
-      let mainData = JSON.parse(data)
-        mainData.push(request.body)
-        fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
-          if(err) throw err
-          response.json(request.body)
-})
-})
-})
 app.delete("/api/notes/:id", function(request, response){
-      let dataSet = request.params.id
-      console.log(request.params.id)
+    const selectParams = request.params.id
+    console.log(selectParams)
     fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
       if(error){return response.sendStatus(404)} 
       let mainData = JSON.parse(data)
-
-      for (let i = 0; i < mainData.length; i++) {
-      if (dataSet === mainData[i].title) {
-        // console.log(response.json(mainData[i]))
+      // for (let i = 0; i < mainData.length; i++) {
+      if (selectParams === mainData.indexOf(mainData.id)){
+        console.log(selectParams)
+        console.log(mainData[i])
+          mainData.splice(i, 1)
       }
-    }
- 
-      // console.log(request.body)
-        mainData.push(request.body)
-//         fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
-//           if(err) throw err
-//           response.json(request.body)
-// })
+    // }
+        fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
+          if(err) throw err
+          response.json(request.body)
 })
-  
- 
+})
 })
 app.listen(PORT, function() {
     console.log("App listening on PORT " + "http://localhost:" + PORT);
