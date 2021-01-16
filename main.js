@@ -22,36 +22,67 @@ app.get("/notes", function(request, response) {
 app.get("/", function(request, response) {
     response.sendFile(path.join(__dirname, "../note/public/index.html"));
   });
-  /////////////////////////////////////
-  const test = {
-      yes: "no",
-      no: "yes"
 
-  }
 //////////////////////////////////////////////////////////////////////////
 
-// app.get("/api/notes", function(request, response){
-//   fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(err){
-//     if(err){
-//         console.log("error")
-//     }
-//   })
-//   return response.json(note)
-// })
+app.get("/api/notes", function(request, response){
+  fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(err, data){
+    if(err){
+        console.log("error")
+    }
+         response.json(JSON.parse(data))
+  })
+  
+})
 
 
 app.post("/api/notes", function(request, response){
-     let note = request.body
-     console.log(request.body)
-     fs.writeFile(path.join(__dirname, "../note/db/db.json"), note.toString(), function(err){
-     if(err){
-         console.log("error")
-     }
-     response.json(note)
-    
+     fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
+      if(error){return response.sendStatus(404)} 
+//////////////////////////add id here////////////////////////
+      let mainData = JSON.parse(data)
+        mainData.push(request.body)
+        fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
+          if(err) throw err
+          response.json(request.body)
 })
 })
 
+})
+app.post("/api/notes", function(request, response){
+     fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
+      if(error){return response.sendStatus(404)} 
+      let mainData = JSON.parse(data)
+        mainData.push(request.body)
+        fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
+          if(err) throw err
+          response.json(request.body)
+})
+})
+})
+app.delete("/api/notes/:id", function(request, response){
+      let dataSet = request.params.id
+      console.log(request.params.id)
+    fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
+      if(error){return response.sendStatus(404)} 
+      let mainData = JSON.parse(data)
+
+      for (let i = 0; i < mainData.length; i++) {
+      if (dataSet === mainData[i].title) {
+        // console.log(response.json(mainData[i]))
+      }
+    }
+ 
+      // console.log(request.body)
+        mainData.push(request.body)
+//         fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
+//           if(err) throw err
+//           response.json(request.body)
+// })
+})
+  
+ 
+})
 app.listen(PORT, function() {
     console.log("App listening on PORT " + "http://localhost:" + PORT);
   });
