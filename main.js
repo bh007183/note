@@ -54,21 +54,15 @@ app.post("/api/notes", function(request, response){
 })
 
 app.delete("/api/notes/:id", function(request, response){
-    const selectParams = request.params.id //////this refurs to the path of id in the url so if the trashcan associated with this it grabs the number
+    const selectParams = request.params.id 
     fs.readFile(path.join(__dirname, "../note/db/db.json"), "utf8", function(error, data){
       if(error){return response.sendStatus(404)} 
       let mainData = JSON.parse(data)
-      console.log(mainData)
-      console.log(mainData[0].id)
       for(var i = 0; i < mainData.length; i++){
         if((mainData[i].id).toString() === selectParams){
              mainData.splice(mainData.indexOf(mainData[i]), 1)
             }
           }
-         
-        
-        
-         
          fs.writeFile(path.join(__dirname, "../note/db/db.json"), JSON.stringify(mainData), function(err){
           if(err) throw err
           response.json(request.body)
