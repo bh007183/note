@@ -14,9 +14,9 @@ app.use(express.static("public"))
 app.get("/notes", function(request, response) {
     response.sendFile(path.join(__dirname, "../note/public/notes.html"));
   });
-app.get("*", function(request, response) {
-    response.sendFile(path.join(__dirname, "../note/public/index.html"));
-  });
+// app.get("/", function(request, response) {
+//     response.sendFile(path.join(__dirname, "../note/public/index.html"));
+//   });
 
 //////////////////////////////////////////////////////////////////////////
 
