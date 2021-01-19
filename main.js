@@ -10,11 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"))
 
-app.get("/api/test", function(request, response){
-  return response.send("you suck")
-  
-  
-})
 
 app.get("/notes", function(request, response) {
     response.sendFile(path.join(__dirname, "../note/public/notes.html"));
